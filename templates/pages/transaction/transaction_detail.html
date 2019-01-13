@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products">Transaction detail</span>
+        <div class="div_products"></div>
+    </div>
+
+    <div class="towns container my">
+        <div >
+            <div class=" row">
+               Id: {{ transaction.id }}
+            </div>
+            <div class=" row">
+                Payed by: {{ transaction.payer.get_full_name }}
+            </div>
+            <div class=" row">
+                Total amount: {{ transaction.amount }}
+            </div>
+            <div class=" row">
+                Create at: {{ transaction.created_time }}
+            </div>
+            <div class=" row">
+                Payed by: {{ transaction.payment_type }}
+            </div>
+            <div class=" row">
+                Total products: {{ transaction.order.cart_items.count }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

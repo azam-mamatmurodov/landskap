@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static widget_tweaks i18n %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_employee_edit">NEW EMPLOYEE</span>
+        <div class="div_employee_edit"></div>
+    </div>
+    <div class="towns container my">
+        <form action="" class="col-4" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="input-group prefix">
+                    <span class="input-group-addon">+998</span>
+                    <input
+                            name="{{ form.phone.name }}"
+                            value="{% if form.phone.value %}{{ form.phone.value }}{% endif %}"
+                            placeholder="991112233"
+                            pattern="[0-9]{9}"
+                            size="9"
+                            maxlength="9"
+                            id="phone"
+                            type="text"
+                            class="form-control"
+                            required
+                    >
+                </div>
+                {% if form.phone.errors %}
+                    {% for error in form.phone.errors %}
+                        <div class="alert alert-danger">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <select required name="cafe" id="cafe" class="form-control">
+                    {% for cafe in cafes %}
+                        <option value="{{ cafe.id }}" {% if cashier.cafe.id == cafe.id %}selected{% endif %}>
+                            {{ cafe.cafe_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.cafe.errors %}
+                    {% for error in form.cafe.errors %}
+                        <div class="alert alert-danger">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group text-right">
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

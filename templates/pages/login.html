@@ -1,0 +1,58 @@
+{% extends 'login_base.html' %}
+{% load static i18n %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+        <div class="left_login_block" style="background-image:url({% static 'img/login_left_img.png' %});"></div>
+        <div class="right_login_block">
+            <div class="right_login_block_inner">
+                <div class="logo_login">
+                   <img src="{% static 'img/logo_invert.png' %}" alt="">
+                </div>
+                <form class="login_form" action="{% url 'users:login_page' %}" method="post">
+                    <div>
+                        <label>
+                            <img src="{% static 'img/person_icon.png' %}" alt=""><span>+998</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="{{ form.username.name }}"
+                            placeholder="991112233"
+                            pattern="[0-9]{9}"
+                            size="9"
+                            maxlength="9"
+                            value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                        >
+                        {% if form.username.errors %}
+                            <div class="text-danger">
+                                {{ form.username.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+                    <div>
+                        <img src="{% static 'img/login_password.png' %}" alt="">
+                        <input type="password" name="{{ form.passwd.name }}" placeholder="{% trans 'Password' %}">
+                        {% if form.passwd.errors %}
+                            <div class="text-danger">
+                                {{ form.passwd.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p>
+                            <input type="checkbox" value="remember" id="remember">
+                            <label for="remember">Remember me</label>
+                        </p>
+                        <a href="{% url 'users:password_reset' %}">Forgot password</a>
+                    </div>
+                    <div>
+                        <button>login</button>
+                        <button>sign up</button>
+                    </div>
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+{% endblock %}

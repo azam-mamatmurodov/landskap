@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static i18n widget_tweaks %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_w_h">working hours</span>
+        <div class="div_w_h"></div>
+    </div>
+
+    <div class="towns container my">
+            <div class="row">
+                <div class="col-12">
+                    <form action="" class="row" method="post">
+                        <input type="hidden" name="action" value="1">
+                        {% csrf_token %}
+                        <section class="col-lg-6">
+                            <div class="w_h_form_divs">
+                                <div>
+                                    <aside>
+                                        <span>
+                                           Monday*:
+                                        </span>
+                                    </aside>
+                                    <article>
+                                        <div>
+                                            <input value="{{ monday.opening_time|date:'H:i' }}" name="monday_open" type="time" min="00:00" max="11:59">
+                                            <select name="time_convention">
+                                                <option value="am">AM</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input  value="{{ monday.closing_time|date:'H:i' }}" name="monday_close" type="time" min="12:00" max="23:59">
+                                            <select name="time_convention">
+                                                <option value="pm">PM</option>
+                                            </select>
+                                        </div>
+                                    </article>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox"> Closed
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <aside>
+                                        <span>
+                                           Tuesday*:
+                                        </span>
+                                    </aside>
+                                    <article>
+                                        <div>
+                                            <input value="{{ tuesday.opening_time|date:'H:i' }}" name="tuesday_open" type="time" min="00:00" max="11:59">
+                                            <select name="time_convention">
+                                                <option value="am">AM</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input  value="{{ tuesday.closing_time|date:'H:i' }}" name="tuesday_close" type="time" min="12:00" max="23:59">
+                                            <select name="time_convention">
+                                                <option value="pm">PM</option>
+                                            </select>
+                                        </div>
+                                    </article>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox"> Closed
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <aside>
+                                        <span>
+                                           Wednesday*:
+                                        </span>
+                                    </aside>
+                                    <article>
+                                        <div>
+                                            <input value="{{ wednesday.opening_time|date:'H:i' }}" name="wednesday_open" type="time" min="00:00" max="11:59">
+                                            <select name="time_convention">
+                                                <option value="am">AM</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input  value="{{ wednesday.closing_time|date:'H:i' }}" name="wednesday_close" type="time" min="12:00" max="23:59">
+                                            <select name="time_convention">
+                                                <option value="pm">PM</option>
+                                            </select>
+                                        </div>
+                                    </article>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox"> Closed
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <aside>
+                                        <span>
+                                           Thursday*:
+                                        </span>
+                                    </aside>
+                                    <article>
+                                        <div>
+                                            <input value="{{ thursday.opening_time|date:'H:i' }}" name="thursday_open" type="time" min="00:00" max="11:59">
+                                            <select name="time_convention">
+                                                <option value="am">AM</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input  value="{{ thursday.closing_time|date:'H:i' }}" name="thursday_close" type="time" min="12:00" max="23:59">
+                                            <select name="time_convention">
+                                                <option value="pm">PM</option>
+                                            </select>
+                                        </div>
+                                    </article>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox"> Closed
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="col-lg-6">
+                            <div class="w_h_form_divs">
+                                <div>
+                                    <aside>
+                                        <span>
+                                           Friday*:
+                                        </span>
+                                    </aside>
+                                    <article>
+                                        <div>
+                                            <input value="{{ friday.opening_time|date:'H:i' }}" name="friday_open" type="time" min="00:00" max="11:59">
+                                            <select name="time_convention">
+                                                <option value="am">AM</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input  value="{{ friday.closing_time|date:'H:i' }}" name="friday_close" type="time" min="12:00" max="23:59">
+                                            <select name="time_convention">
+                                                <option value="pm">PM</option>
+                                            </select>
+                                        </div>
+                                    </article>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox"> Closed
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <aside>
+                                        <span>
+                                           Saturday*:
+                                        </span>
+                                    </aside>
+                                    <article>
+                                        <div>
+                                            <input value="{{ saturday.opening_time|date:'H:i' }}" name="saturday_open" type="time" min="00:00" max="11:59">
+                                            <select name="time_convention">
+                                                <option value="am">AM</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input  value="{{ saturday.closing_time|date:'H:i' }}" name="saturday_close" type="time" min="12:00" max="23:59">
+                                            <select name="time_convention">
+                                                <option value="pm">PM</option>
+                                            </select>
+                                        </div>
+                                    </article>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox"> Closed
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <aside>
+                                        <span>
+                                           Sunday*:
+                                        </span>
+                                    </aside>
+                                    <article>
+                                        <div>
+                                            <input value="{{ sunday.opening_time|date:'H:i' }}" name="sunday_open" type="time" min="00:00" max="11:59">
+                                            <select name="time_convention">
+                                                <option value="am">AM</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input  value="{{ sunday.closing_time|date:'H:i' }}" name="sunday_close" type="time" min="12:00" max="23:59">
+                                            <select name="time_convention">
+                                                <option value="pm">PM</option>
+                                            </select>
+                                        </div>
+                                    </article>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox"> Closed
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="col-12">
+                            <div class="w_h_form_buttons">
+                                <button>Cancel</button>
+                                <button>Save</button>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

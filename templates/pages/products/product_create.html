@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static i18n widget_tweaks landskap_tags %}
+
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products_edit">NEW PRODUCT</span>
+        <div class="div_products_edit"></div>
+    </div>
+
+    <div class="towns container my">
+        <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <div class="products_edit_img_block">
+                    <div class="products_edit_img_block_inner">
+                        <div class="products_edit_img_block_inner_img">
+                            <div style="background-image: url({{ product.images.first.file.url }});"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-9 col-md-6 col-sm-12">
+                {{ form.errors }}
+                <form method="post" action="" class="products_edit_form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="products_edit_left_form">
+                        <div>
+                            {% render_field form.image class='form-control' %}
+                            <div></div>
+                        </div>
+                        <div>
+                            {% render_field form.title placeholder='Title' %}
+                            <div></div>
+                        </div>
+                        <div>
+                            {% render_field form.description rows='3' class='form-control' placeholder='Description' %}
+                            <div></div>
+                        </div>
+                        <div>
+                            {% render_field form.category placeholder='Category' %}
+                        </div>
+                        <div>
+                            {% render_field form.price placeholder='Price' %}
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="products_edit_right_form">
+                        <select name="cafe" id="id_cafe" class="form-control" multiple>
+                            {% for cafe in cafes %}
+                                <option value="{{ cafe.id }}" {% if product.id|cafe_exist:cafe.id %}selected{% endif %}>
+                                    {{ cafe.cafe_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="products_edit_right_form">
+                        <select name="modifier" id="id_modifier" class="form-control" multiple>
+                            {% for modifier in modifiers %}
+                                <option value="{{ modifier.id }}">
+                                    {{ modifier.title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <button>Remove</button>
+                        <button>Cancel</button>
+                        <button>Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="all_display"></div>
+
+    <script src="{% static 'JQuery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    <style>
+
+    </style>
+{% endblock %}

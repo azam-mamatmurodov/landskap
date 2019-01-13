@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products_edit">{{ object.title }}</span>
+        <div class="div_products_edit"></div>
+    </div>
+    <div class="towns container my">
+        <div class="row">
+            <div class="page-content">
+                {% if object.image %}
+                    <div class="news_image col-md-3">
+                        <img style="width: 100%; " src="{{ object.image.url }}" alt="">
+                    </div>
+                {% endif %}
+                <div class="news_text col-md-9">
+                    {{ object.content|safe }}
+                </div>
+                <div class="actions">
+                    <a href="{% url 'users:news_delete' pk=object.pk %}" class="btn btn-danger pull-right">
+                        Delete
+                    </a>
+                    <a href="{% url 'users:news_edit' pk=object.pk %}" class="btn btn-primary pull-right">
+                        Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

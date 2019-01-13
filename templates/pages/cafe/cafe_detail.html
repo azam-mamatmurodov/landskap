@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="page-content">
+        {{ cafe.cafe_name }}
+    </div>
+    {% include 'parts/paginator.html' %}
+{% endblock %}

@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+{% load static i18n widget_tweaks %}
+
+{% block content %}
+
+    <div class="new_cafe container my">
+        <span class="span_cafe_edit">{{ cafe.cafe_name }}</span>
+        <div class="div_cafe_edit"></div>
+    </div>
+
+    <div class="towns container my">
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                <div class="cafe_edit_upload">
+                    <div class="cafe_edit_img_block">
+                        <div class="cafe_edit_img_block_inner">
+                            <div class="cafe_edit_img_block_inner_img">
+                                <div style="background-image: url(
+                                        {% if cafe.logo %}{{ cafe.logo.url }}{% else %}{% static 'img/logo.png' %}{% endif %});"
+                                     id="target_elem">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="cafe_edit_param min">
+                    <li>
+                        <a href="{% url 'users:cafe_week_time_page' cafe_id=object.pk %}">
+                            <img src="{% static 'img/c_e_p_1.png' %}" alt="">
+                            <p>Set Time Graphic</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'users:cafe_location_page' cafe_id=object.pk %}">
+                            <img src="{% static 'img/c_e_p_2.png' %}" alt="">
+                            <p>Set Location</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'users:cafe_gallery' cafe_id=object.pk %}">
+                            <img src="{% static 'img/c_e_p_3.png' %}" alt="">
+                            <p>Photo Gallery</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                {{ form.errors }}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form action="" class="cafe_edit_form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input
+                                name="{{ form.cafe_name.name }}"
+                                value="{% if form.cafe_name.value %}{{ form.cafe_name.value }}{% endif %}"
+                                placeholder="Cafe name"
+                                id="cafe_name"
+                                type="text"
+                                class="form-control"
+                                required>
+                        {% if form.cafe_name.errors %}
+                            {% for error in form.cafe_name.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.category class="form-control" %}
+                        {% if form.category.errors %}
+                            {% for error in form.category.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.description class='form-control' placeholder=form.description.label %}
+                        {% if form.description.errors %}
+                            {% for error in form.description.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% render_field form.tax_rate class='form-control' %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.call_center class='form-control' placeholder=form.call_center.label %}
+                        {% if form.call_center.errors %}
+                            {% for error in form.call_center.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.address class='form-control' placeholder=form.address.label %}
+                        {% if form.address.errors %}
+                            {% for error in form.address.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.second_address class='form-control' placeholder=form.second_address.label %}
+                        {% if form.second_address.errors %}
+                            {% for error in form.second_address.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.city class='form-control' placeholder=form.city.label %}
+                        {% if form.city.errors %}
+                            {% for error in form.city.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.state class='form-control' placeholder=form.state.label %}
+                        {% if form.state.errors %}
+                            {% for error in form.state.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.postal_code class='form-control' placeholder=form.postal_code.label %}
+                        {% if form.postal_code.errors %}
+                            {% for error in form.postal_code.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {% render_field form.website class='form-control' placeholder=form.website.label %}
+                        {% if form.website.errors %}
+                            {% for error in form.website.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="cafe_edit_form_buttons">
+                        {% if view.kwargs.cafe_id %}
+                            {% url 'users:cafe_delete' cafe_id=view.kwargs.cafe_id as cafe_delete %}
+                            <button type="button" class="btn btn-danger"
+                                    onclick="return location.href='{{ cafe_delete }}'">Remove
+                            </button>
+                        {% endif %}
+                        {% url 'users:cafe_list' as cafe_list_url %}
+                        <button type="button" class="btn btn-default"
+                                onclick="return location.href='{{ cafe_list_url }}'">Cancel
+                        </button>
+                        <button class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xl-3 col-sm-12">
+                <ul class="cafe_edit_param">
+                    <li>
+                        <a href="{% url 'users:cafe_week_time_page' cafe_id=object.pk %}">
+                            <img src="{% static 'img/c_e_p_1.png' %}" alt="">
+                            <p>Set Time Graphic</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'users:cafe_location_page' cafe_id=object.pk %}">
+                            <img src="{% static 'img/c_e_p_2.png' %}" alt="">
+                            <p>Set Location</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'users:cafe_gallery' cafe_id=object.pk %}">
+                            <img src="{% static 'img/c_e_p_3.png' %}" alt="">
+                            <p>Photo Gallery</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            function readURLAsBackground(elem, preview) {
+                var file = elem.files[0];
+                var reader = new FileReader();
+
+                reader.addEventListener("load", function () {
+                    preview.style.backgroundImage = "url('" + reader.result + "')";
+                }, false);
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            var logo = $('#cafe_logo');
+
+            $('.cafe-form-image-upload-icon').click(function () {
+                logo.click()
+            });
+
+            logo.change(function (e) {
+                var img_preview = document.getElementById('target_elem');
+                readURLAsBackground(this, img_preview);
+            });
+
+        })
+    </script>
+{% endblock %}

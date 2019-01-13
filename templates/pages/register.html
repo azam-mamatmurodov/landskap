@@ -1,0 +1,136 @@
+{% extends 'login_base.html' %}
+{% load static i18n %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+        <div class="left_login_block" style="background-image:url({% static 'img/login_left_img.png' %});"></div>
+        <div class="right_login_block">
+            <div class="right_login_block_inner">
+                <div class="logo_login">
+                   <img src="{% static 'img/logo_invert.png' %}" alt="">
+                </div>
+                <form class="formSignUp" action="" method="post">
+                {% csrf_token %}
+				<div class="form-item form-itemHalf">
+					<div>
+                        <label for="id_{{ form.first_name.name }}">{% trans 'First name' %}</label>
+                        <input type="text"
+                               name="{{ form.first_name.name }}"
+                               placeholder="{% trans 'First name' %}"
+                               value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}"
+                        >
+                        {% if form.first_name.errors %}
+                            <div class="error-block">
+                                {{ form.first_name.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <label for="id_{{ form.last_name.name }}">
+                        {% trans 'Last name' %}
+                    </label>
+                    <input type="text"
+                           name="{{ form.last_name.name }}"
+                           placeholder="{% trans 'Last name' %}"
+                           value="{% if form.last_name.value %}{{ form.last_name.value }}{% endif %}"
+                    >
+				    {% if form.last_name.errors %}
+                        <div class="error-block">
+                            {{ form.last_name.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+				<div class="form-item form-itemHalf">
+					<input type="text"
+                           name="{{ form.company_name.name }}"
+                           placeholder="{% trans 'Company name' %}"
+                           value="{% if form.company_name.value %}{{ form.company_name.value }}{% endif %}"
+                    >
+					{% if form.company_name.errors %}
+                        <div class="error-block">
+                            {{ form.company_name.errors }}
+                        </div>
+                    {% endif %}
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                        <div class="error-block">
+                            {{ form.category.errors }}
+                        </div>
+                    {% endif %}
+				</div>
+				<div class="form-item form-itemHalf">
+					<input type="email"
+                           name="{{ form.email.name }}"
+                           placeholder="{% trans 'Email' %}"
+                           value="{% if form.email.value %}{{ form.email.value }}{% endif %}"
+                    >
+                    {% if form.email.errors %}
+                        <div class="error-block">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="input-group prefix">
+                        <span class="input-group-addon">+998</span>
+                        <input
+                                type="text"
+                                name="{{ form.username.name }}"
+                                placeholder="{% trans 'Phone number' %}"
+                                value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                                pattern="[0-9]{9}"
+                                size="9"
+                                maxlength="9"
+                        >
+                    </div>
+                    {% if form.username.errors %}
+                        <div class="error-block">
+                            {{ form.username.errors }}
+                        </div>
+                    {% endif %}
+				</div>
+				<div class="form-item form-itemPass">
+					<input type="password"
+                           name="{{ form.passwd.name }}"
+                           placeholder="{% trans 'Password' %}"
+                    >
+                    {% if form.passwd.errors %}
+                        <div class="error-block">
+                            {{  form.passwd.errors  }}
+                        </div>
+                    {% endif %}
+				</div>
+				<div class="form-item form-itemPass">
+					<input type="password" name="{{ form.confirm_passwd.name }}" placeholder="{% trans 'Confirm password' %}">
+                    {% if form.confirm_passwd.errors %}
+                        <div class="error-block">
+                            {{ form.confirm_passwd.errors }}
+                        </div>
+                    {% endif %}
+				</div>
+				<div class="form-itemAgreement">
+					<input id="itemAgreement"
+                           type="checkbox"
+                           name="checked"
+                           required
+                           {% if form.username.value %}checked{% endif %}
+
+                    >
+                    <label for="itemAgreement">
+                        {% trans 'I agree with terms and conditions' %}
+                    </label>
+				</div>
+				<div class="form-actions">
+					<input type="submit" name="" value="{% trans 'Sign up' %}">
+				</div>
+			</form>
+			<div class="hasAccount">
+				<p>
+					<a href="{% url 'users:login_page' %}">
+                        {% trans 'Already have an account' %}? {% trans 'Sign in' %}
+                    </a>
+				</p>
+			</div>
+            </div>
+        </div>
+{% endblock %}

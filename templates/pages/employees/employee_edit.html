@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static widget_tweaks i18n %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_employee_edit">NEW EMPLOYEE</span>
+        <div class="div_employee_edit"></div>
+    </div>
+
+    <div class="towns container my">
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                <div class="employee_edit_img_block">
+                    <div class="employee_edit_img_block_inner">
+                        <div class="employee_edit_img_block_inner_img">
+                            <div style="background-image:  url(
+                                    {% if employee.avatar %}{{ employee.avatar.url }}{% else %}{% static 'img/logo_1.png' %}{% endif %})"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a id="upload_avatar_btn" href="#" class="btn btn-primary">Choose image</a>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-6 col-md-6 col-sm-12">
+                {{ form.errors }}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form action="" class="employee_edit_form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="d-none">
+                        {% render_field form.avatar placeholder='Avatar' %}
+                        <div></div>
+                        {% if form.avatar.errors %}
+                            {% for error in form.avatar.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% render_field form.first_name placeholder='First name' %}
+                        <div></div>
+                        {% if form.first_name.errors %}
+                            {% for error in form.first_name.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% render_field form.last_name placeholder='Last name' %}
+                        <div></div>
+                        {% if form.last_name.errors %}
+                            {% for error in form.last_name.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% render_field form.phone placeholder='Phone' %}
+                        <div></div>
+                        {% if form.phone.errors %}
+                            {% for error in form.phone.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% render_field form.date_of_birthday placeholder='Date of birthday' %}
+                        <div></div>
+                        {% if form.date_of_birthday.errors %}
+                            {% for error in form.date_of_birthday.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% render_field form.gender placeholder='Gender' %}
+                        <div></div>
+                        {% if form.gender.errors %}
+                            {% for error in form.gender.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        <select name="cafe">
+                            {% for cafe in cafes %}
+                                <option {% if object.cashiers.first.cafe.id == cafe.id %}selected{% endif %}
+                                        value="{{ cafe.id }}">{{ cafe.cafe_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2"><label class="form-check-label"> Is can reject</label></div>
+                        <div class="col-sm-10"><input type="checkbox" class="form-check-input" name="is_can_reject"
+                                                      {% if form.is_can_reject %}checked{% endif %}/>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn_as_lin" href="{% url 'users:employee_password' employee_id=object.id %}">
+                            Password set
+                        </button>
+                        <button class="btn_as_lin" href="{% url 'users:employee_delete' employee_id=object.id %}">
+                            Remove
+                        </button>
+                        <button class="btn_as_lin" type="reset" href="{% url 'users:employee_list' %}">Cancel</button>
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block css %}
+    <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .gj-datepicker.gj-datepicker-md.gj-unselectable {
+            transform: unset;
+            height: 40px;
+            transition: unset;
+            border-radius: unset;
+            padding: 0;
+            background-color: unset;
+        }
+
+        input#id_date_of_birthday {
+            height: 100%;
+        }
+
+        .gj-datepicker-md [role=right-icon] {
+            top: 9px;
+        }
+
+    </style>
+{% endblock %}
+{% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $('#id_date_of_birthday').datepicker({
+                value: '{{ object.date_of_birthday|date:"Y-m-d" }}',
+                format: 'yyyy-mm-dd'
+            });
+
+            $('#upload_avatar_btn').click(function () {
+                $('#id_avatar').click();
+            });
+
+            $('.btn_as_lin').click(function (e) {
+                location.href = $(this).attr('href');
+                e.preventDefault()
+            })
+
+            $("input[name='date_of_birthday']").click(function (e) {
+                $(this).siblings('.gj-icon').trigger('click')
+            })
+        })
+    </script>
+{% endblock %}

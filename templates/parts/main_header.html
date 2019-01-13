@@ -1,0 +1,68 @@
+{% load static i18n %}
+<header>
+    <div class="header container my">
+        <a href="{% url 'users:cafe_list' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="">
+        </a>
+        <div class="header_left">
+            <nav class="nav">
+                <ul>
+                    {% for menu_item in menu_items %}
+                        <li class="{% if request.path_info == menu_item.get_absolute_url %}active{% endif %}">
+                            <a href="{{ menu_item.get_absolute_url }}">
+                                {{ menu_item.title }}
+                            </a><div></div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+            <div class="user">
+                <div class="user_name">
+                    <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <p>{{ request.user.get_full_name }}</p>
+                        <span>Manager</span>
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item login_out" href="{% url 'users:logout' %}">
+                            <img src="{% static 'img/login_out-512.png' %}" alt="">Log out
+                        </a>
+                      </div>
+                    </div>
+
+                </div>
+                <div class="user_img">
+                    <img src="{% static 'img/logo_3.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="nav_button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</header>
+<nav class="nav nav_fixed">
+    <div class="user">
+        <div class="user_img">
+            <img src="{% static 'img/logo_3.jpg' %}" alt="">
+        </div>
+        <div class="user_name">
+            <p>{{ request.user.get_full_name }}</p>
+            <span>Manager</span>
+        </div>
+    </div>
+    <ul>
+        {% for menu_item in menu_items %}
+            <li class="{% if request.path == menu_item.get_absolute_url %}active{% endif %}">
+                <a href="{{ menu_item.get_absolute_url }}">
+                    {{ menu_item.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a class="login_out" href="#">
+        <img src="{% static 'img/login_out-512.png' %}" alt="">Log out
+    </a>
+</nav>

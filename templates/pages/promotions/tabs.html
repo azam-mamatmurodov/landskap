@@ -1,0 +1,26 @@
+<ul class="nav nav-tabs" role="tablist">
+    {% url 'promotions:notifications_promotion' as notifications_promotion_url %}
+    <li role="presentation" class="{% if notifications_promotion_url == request.path %}
+    active
+    {% endif %}">
+        <a href="{{ notifications_promotion_url }}">
+            Push notification
+        </a>
+    </li>
+    {% url 'promotions:search_promotion' as search_promotion_url %}
+    <li role="presentation" class="{% if search_promotion_url == request.path %}
+    active
+    {% endif %}">
+        <a href="{% url 'promotions:search_promotion' %}">
+            Show in search
+        </a>
+    </li>
+    {% url 'promotions:category_promotion' as category_promotion_url %}
+    <li role="presentation" class="{% if category_promotion_url == request.path %}
+    active
+    {% endif %}">
+        <a href="{% url 'promotions:category_promotion' %}">
+            Show in related business
+        </a>
+    </li>
+</ul>

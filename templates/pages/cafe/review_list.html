@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+
+    <div class="new_cafe container my">
+        <span class="span_gallery">Reviews for {{ request.user.settings.cafe_name }}</span>
+        <div class="div_gallery"></div>
+    </div>
+
+    <div class="towns container my">
+        <div class="comments " id="comments">
+            <!-- comment -->
+            {% for review in review_list %}
+                <div class="comment mb-2 row">
+                    <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                        <a href="">
+                            <img class="mx-auto rounded-circle img-fluid" src="{{ review.author.avatar.url }}"
+                                 alt="avatar">
+                        </a>
+                    </div>
+                    <div class="comment-content col-md-11 col-sm-10">
+                        <h6 class="small comment-meta"><a href="#">{{ review.author.get_full_name }}</a>
+                            {{ review.created_at|date:'d/m/Y, H:i' }}
+                        </h6>
+                        <div class="comment-body">
+                            <p>
+                                {{ review.comment }}
+                                <br>
+                                <a href="#" class="text-right small remove_comment" data-review_id="{{ review.id }}"
+                                data-toggle="modal" data-target="#delete_Modal">
+                                    <i class="fa fa-trash"></i> Delete
+                                </a>
+                                <a href="#" class="text-right small reply_to_comment" data-review_id="{{ review.id }}"
+                                   data-toggle="modal" data-target="#myModal">
+                                    <i class="fa fa-reply"></i> Reply
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    {% if review.get_children %}
+                        {% for child_review in review.get_children %}
+                            <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2">
+                                <div class="row">
+                                    <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                                        <a href="">
+                                            <img class="mx-auto rounded-circle img-fluid"
+                                                 src="{{ child_review.author.avatar.url }}" alt="avatar">
+                                        </a>
+                                    </div>
+                                    <div class="comment-content col-md-11 col-sm-10 col-12">
+                                        <h6 class="small comment-meta">
+                                            <a href="#">{{ child_review.author.get_full_name }}</a>
+                                            {{ child_review.created_at|date:'d/m/Y, H:i' }}
+                                        </h6>
+                                        <div class="comment-body">
+                                            <p>
+                                                {{ child_review.comment }}
+                                                <br>
+                                                <a href="#" class="text-right small remove_comment" data-review_id="{{ review.id }}"
+                                                data-toggle="modal" data-target="#delete_Modal">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </a>
+                                                <a href="" class="text-right small reply_to_comment"
+                                                   data-review_id="{{ child_review.id }}" data-toggle="modal"
+                                                   data-target="#myModal">
+                                                    <i class="fa fa-reply"></i> Reply
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value="" id="review_id" name="review_id">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Response</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea placeholder="Type your response" required name="review_text" id="" cols="10" rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal" id="delete_Modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value="" id="delete_review_id" name="delete_review_id">
+                    <input type="hidden" value="1" name="delete_review">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Response</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        Do you confirm to delete ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('.reply_to_comment').click(function (e) {
+                var review_id = $(this).data('review_id');
+                console.log(review_id);
+                $('#review_id').val(review_id);
+            });
+            $('.remove_comment').click(function (e) {
+                var review_id = $(this).data('review_id');
+                console.log(review_id);
+                $('#delete_review_id').val(review_id);
+            });
+        })
+    </script>
+{% endblock %}

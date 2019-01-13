@@ -1,0 +1,327 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Payment' %}{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            <div class="gallery">
+                <div class="gallery_title">
+                    <div class="container">
+                        <div class="row">
+                            <h2>Payment</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery_content">
+                    <div class="container">
+                        <div class="row">
+                            <form id="form-payme" method="POST" action="https://test.paycom.uz">
+
+                                <!-- Идентификатор WEB Кассы -->
+                                <input type="hidden" name="merchant" value="5ace6614d3e9a83c608efabc"/>
+
+                                <!-- Сумма платежа в тиинах -->
+                                <input type="hidden" name="amount" value="500000"/>
+
+                                <!-- Поля Объекта Account -->
+                                <input type="hidden" name="account[order_id]" value="1"/>
+                                <input type="hidden" name="account[customer_id]" value="97"/>
+
+                                <!-- ==================== НЕ ОБЯЗАТЕЛЬНЫЕ ПОЛЯ ====================== -->
+                                <!-- Язык. Доступные значения: ru|uz|en
+                                     Другие значения игнорируются
+                                     Значение по умолчанию ru -->
+                                <input type="hidden" name="lang" value="ru"/>
+
+                                <!-- Валюта. Доступные значения: 643|840|860|978
+                                     Другие значения игнорируются
+                                     Значение по умолчанию 860
+                                     Коды валют в ISO формате
+                                     643 - RUB
+                                     840 - USD
+                                     860 - UZS
+                                     978 - EUR -->
+                                <input type="hidden" name="currency" value="860"/>
+
+                                <!-- URL возврата после оплаты или отмены платежа.
+                                     Если URL возврата не указан, он берется из заголовка запроса Referer.
+                                     URL возврата может содержать параметры, которые заменяются Paycom при запросе.
+                                     Доступные параметры для callback:
+                                     :transaction - id транзакции или "null" если транзакцию не удалось создадь
+                                     :account.{field} - поля объекта Account
+                                     Пример: https://your-service.uz/paycom/:transaction -->
+                                <input type="hidden" name="callback" value="http://Landskap.uz/api/v1/payment/payme/"/>
+
+                                <!-- Таймаут после успешного платежа в милисекундах.
+                                     Значение по умолчанию 15
+                                     После успешной оплаты, по истечении времени callback_timeout
+                                     производится перенаправление пользователя по url возврата после платежа -->
+                                <input type="hidden" name="callback_timeout" value="15"/>
+
+                                <!-- Выбор платежного инструмента Paycom.
+                                     В Paycom доступна регистрация несколько платежных
+                                     инструментов. Если платёжный инструмент не указан,
+                                     пользователю предоставляется выбор инструмента оплаты.
+                                     Если указать id определённого платежного инструмента -
+                                     пользователь перенаправляется на указанный платежный инструмент. -->
+{#                                <input type="hidden" name="payment" value="{payment_id}"/>#}
+
+                                <!-- Описание платежа
+                                     Для описания платежа доступны 3 языка: узбекский, русский, английский.
+                                     Для описания платежа на нескольких языках следует использовать
+                                     несколько полей с атрибутом  name="description[{lang}]"
+                                     lang может принимать значения ru|en|uz -->
+                                <input type="hidden" name="description" value="Oplata za promotion"/>
+
+                                <!-- Объект детализации платежа
+                                     Поле для детального описания платежа, например, перечисления
+                                     купленных товаров, стоимости доставки, скидки.
+                                     Значение поля (value) — JSON-строка закодированная в BASE64 -->
+{#                                <input type="hidden" name="detail" value="{JSON объект детализации в BASE64}"/>#}
+                                <!-- ================================================================== -->
+
+                                <button class="payme_button" type="submit">Оплатить с помощью <b>PAYCOM</b></button>
+                            </form>
+                            <form class="form-horizontal">
+                                <input type="hidden" id="sub_amount" value="500000">
+                                <div class="form-group">
+                                    <label for="card_number">Card number</label>
+                                    <input
+                                            required
+                                            class="form-control"
+                                            type="text"
+                                            id="card_number"
+                                            size="16"
+                                            maxlength="16"
+                                            value="8600134301849596"
+                                    >
+                                </div>
+                                <div class="form-group">
+                                    <label for="expire_date">Expire date</label>
+                                     <div class="input-append date" id="dpMonths" data-date="10/2018" data-date-format="mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months">
+                                        <input
+                                                required
+                                                id="expire_date"
+                                                class="span2"
+                                                size="16"
+                                                type="text"
+                                                value="0320"
+                                                readonly
+                                        >
+                                        <span class="add-on"><i class="icon-calendar"></i></span>
+                                     </div>
+                                </div>
+                                <div class="form-group col-xs-2" style="margin-right: -15px; margin-left: -15px;">
+                                    <label for="verfication_code">Verification Code</label>
+                                    <input
+                                            id="verfication_code"
+                                            type="text"
+                                            class="form-control"
+                                            max="6"
+                                            min="6"
+                                            maxlength="6"
+                                            pattern="\d{6}"
+                                            value="666666"
+                                    >
+                                </div>
+
+                                <button
+                                        style="margin: 10px 0;"
+                                        class="payme_button_subscribe btn btn-success pull-right"
+                                        type="button">
+                                    Оплатить с помощью <b>PAYCOM - Subscribe</b>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}
+{% block css %}
+    <style>
+        .payme_button
+        {
+            background-image: url('https://help.paycom.uz/images/render_button_example.png');
+            width: 300px;
+            height: 100px;
+            background-size: 300px 100px;
+            color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+        }
+        form#form-payme {
+            margin: 10px 0;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#dpMonths').datepicker({
+                format: "mm/yyyy",
+                startView: "months",
+                minViewMode: "months"
+            });
+
+            {#var verification_has_card_number = "8600134301849596";#}
+            {#var verification_has_card_number = "8600069195406311";#}
+            var verification_has_card_number = "8600495473316478";
+
+            var token, card_number, expire_date = null;
+            var paycom_url = "https://checkout.test.paycom.uz/api";
+            var backend_url = "/api/v1/payment/payme/subscribe/";
+            var x_auth = '5ace6614d3e9a83c608efabc';
+
+            var step = 1;
+            var method = "cards.create";
+            var data;
+            var id = 123;
+
+
+            $('.payme_button_subscribe').click(function () {
+                if (method === 'cards.verify')
+                {
+                    var verfication_code = $('#verfication_code');
+                    if (verfication_code.val().length === 0)
+                    {
+                        alert('Invalid verification code');
+                        verfication_code.css({
+                            'border': '1px solid red'
+                        });
+                        return false;
+                    }
+                }
+                var order_id = $('#order_id').val();
+                var customer_id = $('#customer_id').val();
+                var amount = $('#sub_amount').val();
+
+                card_number = $('#card_number').val();
+                expire_date = $('#expire_date').val().split('/').join('');
+
+
+                if(method === "cards.create")
+                {
+                    console.log('Method: ' + method);
+                    console.log('Token: ' + token);
+                    data = JSON.stringify({
+                        "id": id,
+                        "method": method,
+                        "params": {
+                            "card": {
+                                "number": verification_has_card_number,
+                                "expire": "0320"
+                            },
+                            "amount": 500000,
+                            "account": {
+                                "order_id": 1,
+                                "customer_id": 97
+                            },
+                            "save": true
+                        }
+                    });
+
+                    $.ajax({
+                        type: 'POST',
+                        url: backend_url,
+                        data: {data: data},
+                        success: function(resp){
+                            if (resp.error)
+                            {
+                                alert(resp.error.message);
+                                return false;
+                            }
+                            console.log(method);
+                            console.log(resp);
+
+                            token = resp.result.card.token;
+                            method = 'cards.get_verify_code';
+
+                        },
+                        async:false
+                    });
+
+                    /* Verify, Sending new request with new data,  */
+                    if (method === 'cards.get_verify_code')
+                    {
+                        console.log('Method: ' + method);
+                        console.log('Token: ' + token);
+                        data = JSON.stringify({
+                            "id": id,
+                            "method": 'cards.get_verify_code',
+                            "params": {
+                                "token":token
+                            }
+                        });
+                        $.ajax({
+                            type: 'POST',
+                            url: backend_url,
+                            data: {data: data},
+                            success: function(resp){
+                                if (resp.error)
+                                {
+                                    alert(resp.error.message);
+                                    return false;
+                                }
+                                console.log(method);
+                                console.log(resp);
+                                method = 'cards.verify'
+                            },
+                            async:false
+                        });
+                    }
+
+                }
+                else if (method === 'cards.verify' )
+                {
+                    console.log('Method: ' + method);
+                    console.log('Token: ' + token);
+                    data = JSON.stringify({
+                        "id": id,
+                        "method": method,
+                        "params": {
+                            "token": token,
+                            "code": "666666"
+                        }
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: backend_url,
+                        data: {data: data},
+                        success: function(resp){
+                                if (resp.error)
+                                {
+                                    alert(resp.error.message);
+                                    return false;
+                                }
+                            console.log(method);
+                            console.log(resp);
+                            {#method = 'cards.check'#}
+                        },
+                        async:false
+                    });
+                }
+                else if (step === 'cards.check' )
+                {
+
+                }
+                else if (step === 'cards.remove' )
+                {
+
+                }
+
+
+
+
+            });
+        });
+    </script>
+{% endblock %}

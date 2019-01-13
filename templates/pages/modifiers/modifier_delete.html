@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+
+{% block content %}
+<div class="page-content">
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-primary" value="{% trans 'Confirm' %}">
+    </form>
+</div>
+{% endblock %}

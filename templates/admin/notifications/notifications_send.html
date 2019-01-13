@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <div>
+        <form id="send_notification" action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Send notification">
+        </form>
+    </div>
+
+<style type="text/css">
+    #send_notification p label
+    {
+       display: block;
+        padding: 4px 10px 0 0;
+        float: left;
+        width: 160px;
+        word-wrap: break-word;
+        line-height: 1;
+    }
+    #send_notification p input {
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+    #send_notification p input[type='text'] {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 5px 6px;
+        margin-top: 0;
+    }
+    #send_notification p textarea {
+        width: 610px;
+    }
+</style>
+{% endblock %}

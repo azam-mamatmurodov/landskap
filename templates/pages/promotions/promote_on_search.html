@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Landskap | Search promotion
+{% endblock %}
+
+{% block content %}
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            <div class="promate">
+                <div class="container">
+                    <div class="row">
+                        <div class="promate-title">
+                            <h3>Promote</h3>
+                        </div>
+                        <div class="promate-content">
+                            {% include 'pages/promotions/tabs.html' %}
+                            <div class="tab-content col-sm-9">
+                                <div role="tabpanel" class="chats tab-pane active" id="search">
+                                    <div class="promote-history-wrapper">
+                                        <a class="promote_history" href="{% url 'promotions:search_promotion_history' %}">
+                                            History
+                                        </a>
+                                    </div>
+                                    <div class="chats-content">
+                                        <h4>Show in Search</h4>
+                                        <span>
+                                            Here you can promote your business to show in search
+                                        </span>
+                                        <div class="payment">
+                                            <form method="post" action="" id="on_search_promotion">
+                                                {{ form.errors }}
+                                                {% csrf_token %}
+                                                <p>Action type:</p>
+                                                <div>
+                                                    <input type="radio" data-price="{{ promote_type.click_price|floatformat }}" name="action_type" value="click" checked id="pre-click">
+                                                    <label for="pre-click">Per click</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" data-price="{{ promote_type.view_price|floatformat }}"  name="action_type" value="view"  id="per-view">
+                                                    <label for="per-view">Per view</label>
+                                                </div>
+                                                <div class="amount promotion_amount">
+                                                    <p>Enter amount:</p>
+                                                    {{ form.count_of_action }}
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="promotion col-sm-3">
+                                <div class="promotion-price">
+                                    <h4>Promotion price</h4>
+                                    <div class="price">
+                                        <div class="price-item">
+                                            <h5>Show in search:
+                                                <div><i id="action_price">0</i> uzs/per <i id="action_type">click</i></div>
+                                            </h5>
+                                            <p><span id="total_counts">0</span> <span id="actions"></span>s</p>
+                                        </div>
+                                    </div>
+                                    <div class="total-price">
+                                        <h6>Total price</h6>
+                                        <p><span id="total_price">0</span> uzs</p>
+                                    </div>
+                                    <a class="checkout" onclick="document.getElementById('on_search_promotion').submit();">Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            function  get_and_set_data() {
+                var action_type = $('input[name="action_type"]:checked');
+                var price = parseFloat(action_type.data('price'));
+                var count_of_action = $('#id_count_of_action').val();
+
+                var action_price_el = $('#action_price');
+                action_price_el.text(price);
+
+                var action_type_el = $('#action_type');
+                action_type_el.text(action_type.val());
+                $('#actions').text(action_type.val());
+
+                $('#total_counts').text(count_of_action);
+
+                var total_price = price * parseInt(count_of_action);
+                $('#total_price').text(total_price);
+            }
+            get_and_set_data();
+            $('input[name="action_type"], #id_count_of_action').on('change', function (e) {
+                get_and_set_data();
+            })
+        });
+    </script>
+{% endblock %}

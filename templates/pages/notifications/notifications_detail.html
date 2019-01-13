@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}
+    Landskap | {% trans 'Notifications detail' %}
+{% endblock %}
+
+{% block content %}
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            <div class="reviews notification">
+                <div class="container">
+                    <div class="row">
+                        <div class="reviews-title">
+                            <h3>Notification</h3>
+                            <a href="#" class="clear-all">Clear all</a>
+                        </div>
+                        <div class="reviews-content">
+                            <div class="chats-content new">
+                                    <div class="chat-contact-header">
+                                        <span>from</span>
+                                        <h4>{{ notification.notification_sender.get_full_name }}</h4>
+                                        <span>{{ notification.created_at }}</span>
+                                        <a href="#" class="clear">Clear</a>
+                                    </div>
+                                    <div class="chat-contact-body">
+                                        <p>
+                                            {{ notification.text }}
+                                        </p>
+                                        {% if notification.image %}
+                                            <img src="{{ notification.image.url }}" alt="">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                        </div>
+                        {% include 'parts/paginator.html' %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="overlay"></div>
+    </section>
+{% endblock %}

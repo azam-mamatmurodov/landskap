@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="new_employee container my">
+            <span class="span_employee">EMPLOYEES</span>
+            <div class="div_employee"></div>
+            <a href="{% url 'users:employee_add' %}">NEW EMPLOYEE</a>
+            <a href="{% url 'users:employee_add_existing' %}" class="add-existing btn btn-primary">
+                <span class="glyphicon glyphicon-check"></span>
+                Add existing Employee
+            </a>
+        </div>
+
+        <div class="towns container my">
+            <div class="row">
+                {% for employee in object_list %}
+                    <div class="col-lg-3 col-md-6">
+                        <article class="employees">
+                            <div class="employees_top">
+                                <div class="employees_top_img"
+                                    style="background-image: url({% if employee.avatar %}{{ employee.avatar.url }}{% else %}{% static 'img/logo_3.jpg' %}{% endif %})">
+                                </div>
+                                <div class="employees_top_fixed_img"
+                                    style="background-image: url({% if employee.avatar %}{{ employee.avatar.url }}{% else %}{% static 'img/logo_3.jpg' %}{% endif %})">
+                                </div>
+                                <a href="{% url 'users:employee_edit' employee_id=employee.id %}"><img src="{% static 'img/main_towns_pen.png' %}" alt=""></a>
+                            </div>
+                            <aside>
+                                <p>{{ employee.get_full_name }}</p>
+                                <span>Manager</span>
+                                <span>{{ employee.get_phone }}</span>
+                            </aside>
+                        </article>
+                    </div>
+            {% endfor %}
+            </div>
+        </div>
+{% endblock %}

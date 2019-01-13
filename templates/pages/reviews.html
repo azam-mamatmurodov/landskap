@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            <div class="dashboard">
+                <div class="dashboard_title">
+                    <div class="container">
+                        <div class="row">
+                            <h2>
+                                {% trans 'Dashboard' %}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard_content">
+                    <div class="container">
+                        <div class="row">
+                            <div>
+                                <div class="col-sm-3">
+                                    <h3>{% trans 'New reviews' %}</h3>
+                                    <span>{% trans 'last 7 days' %}</span>
+                                    <p data-count="{{ new_reviews_within_week }}" class="counter">
+                                        {{ new_reviews_within_week }}
+                                    </p>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h3>{% trans 'Responded reviews' %}</h3>
+                                    <span>{% trans 'last 7 days' %}</span>
+                                    <p data-count="{{ responded_reviews_within_week }}" class="counter">
+                                        {{ responded_reviews_within_week }}
+                                    </p>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h3>{% trans 'Unresponded reviews' %}</h3>
+                                    <span>{% trans 'last 7 days' %}</span>
+                                    <p data-count="{{ un_responded_reviews_within_week }}" class="counter">
+                                        {{ un_responded_reviews_within_week }}
+                                    </p>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h3>{% trans 'Total reviews' %}</h3>
+                                    <span>{% trans 'last 7 days' %}</span>
+                                    <p data-count="{{ total_reviews_within_week }}" class="counter">
+                                        {{ total_reviews_within_week }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="reviews">
+                <div class="container">
+                    <div class="row">
+                        <div class="reviews-title">
+                            <h3>{{ title }}</h3>
+                        </div>
+                        <div class="reviews-content">
+                            <ul class="nav nav-tabs" role="tablist">
+                                {% url 'main:reviews' review_type='latest' as latest_responded_reviews_url %}
+                                <li role="presentation" class="{% ifequal request.path latest_responded_reviews_url %}active{% endifequal %}">
+                                    <a href="{{ latest_responded_reviews_url }}">
+                                        {% trans 'Latest' %}
+                                    </a>
+                                </li>
+                                {% url 'main:reviews' review_type='responded'  as home_responded_reviews_url %}
+                                <li role="presentation" class="{% ifequal request.path home_responded_reviews_url %}active{% endifequal %}">
+                                   <a href="{{ home_responded_reviews_url }}" >
+                                        {% trans 'Responded' %}
+                                    </a>
+                                </li>
+                                {% url 'main:reviews' review_type='not-responded'  as home_not_responded_reviews_url %}
+                                <li role="presentation" class="{% ifequal request.path home_not_responded_reviews_url %}active{% endifequal %}">
+                                    <a href="{{ home_not_responded_reviews_url }}" >
+                                        {% trans 'Not Responded' %}
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div role="tabpanel" class="chats tab-pane active" id="latest">
+                                    {% for review in review_list %}
+                                        <div class="chats-content" id="review-{{ review.id }}">
+                                            <h4>{{ review.author.get_full_name }} <span class="ful-star"></span></h4>
+                                            <span>{{ review.created_at|timesince }}</span>
+                                            <p>
+                                                {{ review.comment }}
+                                                {% if review.album.file_set %}
+                                                    {% for review_file in review.album.file_set.all %}
+                                                        {% if review_file.file %}
+                                                            <p><a target="_blank" href="{{ review_file.file.url }}">Attachment</a></p>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </p>
+                                            {% if review.get_children %}
+                                                <div class="answers">
+                                                    {% for review_child in review.get_children %}
+                                                        <div class="answers-item">
+                                                            <div class="answers-profile">
+                                                                <div class="answers-profile-img">
+                                                                    {% if review_child.author.get_image %}
+                                                                        <img src="{{ review_child.author.get_image }}" alt="">
+                                                                    {% endif %}
+                                                                </div>
+                                                                <p class="online">
+                                                                    {% if review_child.author.is_authenticated %}
+                                                                        online
+                                                                    {% else %}
+                                                                        offline
+                                                                    {% endif %}
+                                                                </p>
+                                                            </div>
+                                                            <div class="answers-text">
+                                                                <p>{{ review_child.comment }}</p>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if not review.get_children %}
+                                                <form action="{{ request.get_full_path }}#review-{{ review.id }}" method="post">
+                                                    {% csrf_token %}
+                                                    <input name="parent" type="hidden" value="{{ review.id }}">
+                                                    <textarea required class="chats-area" name="comment" id=""></textarea>
+                                                    <button type="submit" >Reply</button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    {% empty %}
+                                        <div class="no_reviews">There are no reviews yet</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% include 'parts/paginator.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}
+{% block css %}
+    <style>
+        .no_reviews
+        {
+            margin: 0;
+            font-size: 18px;
+            font-weight: normal;
+            color: #42425c;
+            padding: 0px 0 5px 32px;
+            letter-spacing: 2px;
+        }
+    </style>
+{% endblock %}

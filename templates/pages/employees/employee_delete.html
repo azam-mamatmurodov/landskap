@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static widget_tweaks i18n %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_employee_edit">DELETE EMPLOYEE</span>
+        <div class="div_employee_edit"></div>
+    </div>
+    <div class="towns container my">
+        <div class="text-center">
+            <form action="" class="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <h4>Are you sure to <button class="btn btn-danger">Delete</button>?</h4>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

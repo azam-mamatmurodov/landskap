@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}
+    Landskap | {% trans 'Notifications' %}
+{% endblock %}
+
+{% block content %}
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            <div class="reviews notification">
+                <div class="container">
+                    <div class="row">
+                        <div class="reviews-title">
+                            <h3>Notifications</h3>
+                            {% if all_notifications %}
+                                <a href="?clear=all" class="clear-all">Clear all</a>
+                            {% endif %}
+                        </div>
+                        <div class="reviews-content">
+                            {% for notification in all_notifications %}
+                                <div class="chats-content new">
+                                    <div class="chat-contact-header">
+                                        <span>from</span>
+                                        <h4>{{ notification.notification_sender.get_full_name }}</h4>
+                                        <span>{{ notification.created_at|date:'F, d' }}</span>
+                                        <a href="?clear={{ notification.id }}" class="clear">Clear</a>
+                                    </div>
+                                    <div class="chat-contact-body">
+                                        <p>
+                                            {{ notification.text }}
+                                        </p>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                You have not notifications yet!
+                            {% endfor %}
+                        </div>
+                        {% include 'parts/paginator.html' %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="overlay"></div>
+    </section>
+{% endblock %}

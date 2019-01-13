@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Landskap | Notifications promotion
+{% endblock %}
+
+{% block content %}
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            <div class="promate">
+                <div class="container">
+                    <div class="row">
+                        <div class="promate-title">
+                            <h3>Promote</h3>
+                        </div>
+                        <div class="promate-content">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="{% url 'promotions:notifications' %}">
+                                        Push notification
+                                    </a>
+                                </li>
+                                <li role="presentation" class="">
+                                    <a href="#search" aria-controls="search" role="tab" data-toggle="tab" aria-expanded="true">
+                                        Show in search
+                                    </a>
+                                </li>
+                                <li role="presentation" class="">
+                                    <a href="#category" aria-controls="category" role="tab" data-toggle="tab" aria-expanded="true">
+                                        Show in related company page
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content col-sm-9">
+                                <div role="tabpanel" class="chats tab-pane active" id="push">
+                                    <div class="chats-content">
+                                        <h4>Push Notification</h4>
+                                        <span>Lorem Ipsum dolor sit amet,lorem ipsum dolor sit amet</span>
+                                        <textarea class="chats-area" placeholder="Xabaringizni yozib qoldiring"></textarea>
+                                        <div class="upload">
+                                            <span>Attach photo/video</span>
+                                            <a href="#">Upload</a>
+                                        </div>
+                                        <div class="amount">
+                                            <p>Enter amount:</p>
+                                            <select name="amount">
+                                                <option value="1">1</option>
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="30">30</option>
+                                                <option value="40">40</option>
+                                                <option value="50">50</option>
+                                                <option value="60">60</option>
+                                                <option value="70">70</option>
+                                                <option value="80">80</option>
+                                                <option value="90">90</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="chats tab-pane" id="search">
+                                    <div class="chats-content">
+                                        <h4>Show in Search</h4>
+                                        <span>Lorem Ipsum dolor sit amet,lorem ipsum dolor sit amet</span>
+                                        <div class="payment">
+                                            <form action="payment">
+                                                <p>Payment type:</p>
+                                                <div>
+                                                    <input type="radio" name="per" checked id="pre-click">
+                                                    <label for="pre-click">Per click</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" name="per" id="per-view">
+                                                    <label for="per-view">Per view</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="amount">
+                                                <p>Enter amount:</p>
+                                                <select name="amount">
+                                                    <option value="1">1</option>
+                                                    <option value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="30">30</option>
+                                                    <option value="40">40</option>
+                                                    <option value="50">50</option>
+                                                    <option value="60">60</option>
+                                                    <option value="70">70</option>
+                                                    <option value="80">80</option>
+                                                    <option value="90">90</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="chats tab-pane" id="category">
+                                    <div class="chats-content">
+                                        <h4>Show in Category</h4>
+                                        <span>Lorem Ipsum dolor sit amet,lorem ipsum dolor sit amet</span>
+                                        <a href="#">Search</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="promotion col-sm-3">
+                                <div class="promotion-price">
+                                    <h4>Promotion price</h4>
+                                    <div class="price">
+                                        <div class="price-item">
+                                            <h5>Push-notofications:<span>$0.2per notification</span></h5>
+                                            <p>50 push.</p>
+                                        </div>
+                                        <div class="price-item">
+                                            <h5>Show in search:<span>$0.2/0.5per view/click</span></h5>
+                                            <p>150 clicks</p>
+                                        </div>
+                                        <div class="price-item">
+                                            <h5>Push-notofications:<span>$0.2/0.5per view/click</span></h5>
+                                            <p>0</p>
+                                        </div>
+                                    </div>
+                                    <div class="total-price">
+                                        <h6>Total price</h6>
+                                        <p>$ 150.00</p>
+                                    </div>
+                                    <a class="checkout">Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}

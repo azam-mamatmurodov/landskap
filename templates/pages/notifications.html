@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Dashboard' %}{% endblock %}
+
+{% block content %}
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            Company notifications
+        </section>
+    </section>
+{% endblock %}

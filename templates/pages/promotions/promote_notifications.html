@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Landskap | Notifications promotion
+{% endblock %}
+
+{% block content %}
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            <div class="promate">
+                <div class="container">
+                    <div class="row">
+                        <div class="promate-title">
+                            <h3>Promote</h3>
+                        </div>
+                        <div class="promate-content">
+                            {% include 'pages/promotions/tabs.html' %}
+                            <div class="tab-content col-sm-9">
+
+                                <div role="tabpanel" class="chats tab-pane active" id="push">
+                                    <div class="promote-history-wrapper">
+                                        <a class="promote_history" href="{% url 'promotions:notifications_promotion_history' %}">
+                                            History
+                                        </a>
+                                    </div>
+                                    <div class="chats-content">
+                                        <h4>Push Notification</h4>
+                                        <span>
+                                            Here you can send notification to users.
+                                        </span>
+                                        <form id="notification_form" action="" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <textarea name="text"
+                                                      class="chats-area"
+                                                      placeholder="Notification message"
+                                            >{% if form.text.value %}{{ form.text.value }}{% endif %}</textarea>
+                                            {% if form.text.errors %}
+                                                <div class="help-block text-error">
+                                                    {{ form.text.errors }}
+                                                </div>
+                                            {% endif %}
+                                            <div class="upload">
+                                                {{ form.image }}
+                                                <div class="image_preview">
+                                                    <img src="" alt="">
+                                                </div>
+                                                {% if form.image.errors %}
+                                                    <div class="help-block text-error">
+                                                        {{ form.image.errors }}
+                                                    </div>
+                                                {% endif %}
+                                                <span>Attach photo</span>
+                                                <a href="#" id="attach_image">Upload</a>
+                                            </div>
+                                            <div class="amount">
+                                                <p>Enter amount:</p>
+                                                <input data-price="{{ notification_promotion.price|floatformat }}" value="{% if form.count_of_users.value %}{{ form.count_of_users.value }}{% endif %}" type="number" min="1" max="{{ count_of_users }}" name="count_of_users">
+                                                {% if form.count_of_users.errors %}
+                                                    <div class="help-block text-error">
+                                                        {{ form.count_of_users.errors }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="promotion col-sm-3">
+                                <div class="promotion-price">
+                                    <h4>Promotion price</h4>
+                                    <div class="price">
+                                        <div class="price-item">
+                                            <h5>Push-notofications:<span>{{ notification_promotion.price|floatformat }} uzs/per user</span></h5>
+                                            <p id="notification_count">0</p>
+                                        </div>
+                                    </div>
+                                    <div class="total-price">
+                                        <h6>Total price</h6>
+                                        <p><span id="promotion_total_price">0</span> Uzs</p>
+                                    </div>
+                                    <a class="checkout" onclick="document.getElementById('notification_form').submit();">Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+    $(document).ready(function () {
+        function get_and_set_image(file_selector, image_selector) {
+            var files = file_selector.files;
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(image_selector).attr('src', e.target.result);
+            };
+            reader.readAsDataURL(files[0]);
+        }
+
+        $('#attach_image').click(function (e) {
+            e.preventDefault();
+             $('#id_image').click();
+        });
+        $(document).on( 'change', '#id_image',function () {
+            var image_selecter = $('.image_preview').children('img');
+            get_and_set_image(this, image_selecter);
+        });
+
+        $('.amount input[name="count_of_users"]').on('keydown, change',function(e){
+             var input_value = parseInt($(this).val());
+             $('#notification_count').text(input_value);
+             $('#promotion_total_price').text(input_value * parseFloat($(this).data('price')))
+        })
+    });
+    </script>
+{% endblock %}

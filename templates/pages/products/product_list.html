@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products">PRODUCTS</span>
+        <div class="div_products"></div>
+        <a href="{% url 'products:product_create' %}">NEW PRODUCT</a>
+    </div>
+
+    <div class="towns container my">
+        <div class="div_products_table row">
+            <ul action="" class="div_products_table_form col-lg-2">
+                {% url 'products:product_list' as products_list_url %}
+                <li class="{% if request.path == products_list_url %}active{% endif %}"><a href="{{ products_list_url }}">All products</a></li>
+                {% for category in categories %}
+                    {% url 'products:product_cat_list' cat_id=category.id as product_cat_list_url %}
+                    <li class="{% if request.path == product_cat_list_url %}active{% endif %}"><a href="{{ product_cat_list_url }}">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
+            <table class="products_table col-lg-10">
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Info</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+                {% for product in product_list %}
+                    <tr>
+                        <td><img style="width: 81px;" src="{{ product.image.url }}" alt=""></td>
+                        <td><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></td>
+                        <td>{% if product.category %}{{ product.category }}{% else %}-{% endif %}</td>
+                        <td>
+                            <div>
+                                <p>{{ product.description|safe }}</p>
+                            </div>
+                        </td>
+                        <td>{% if product.available %}<p>Available</p>{% else %}<p>Not available</p>{% endif %}</td>
+                        <td>{{ product.price }}</td>
+                        <td><a href="{% url 'products:product_edit' pk=product.pk %}">Edit</a>
+                            <a href="{% url 'products:product_delete' pk=product.pk %}">Remove</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% if is_paginated %}
+                <div class="products_buttons col-12">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-dark">Prev</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-dark">Next</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <nav class="nav nav_fixed">
+        <div class="user">
+            <div class="user_img">
+                <img src="{% static 'img/logo_3.jpg' %}" alt="">
+            </div>
+            <div class="user_name">
+                <p>John Martin</p>
+                <span>Manager</span>
+            </div>
+        </div>
+        <ul>
+            <li class="active"><a href="#">My Cafes</a></li>
+            <li><a href="#">Employees</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Analytics</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+        <a class="login_out" href="#">
+            <img src="{% static 'img/login_out-512.png' %}" alt="">Log out
+        </a>
+    </nav>
+
+    <div class="all_display"></div>
+
+    <script src="{% static 'JQuery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

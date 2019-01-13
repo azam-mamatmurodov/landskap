@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}
+Landskap | Search promotion history
+{% endblock %}
+
+{% block content %}
+    <section class="wrapper">
+        {% include 'parts/main_header.html' %}
+        <section class="content">
+            <div class="reviews notification">
+                <div class="container">
+                    <div class="row">
+                        <div class="reviews-title">
+                            <h3>Search promotion history</h3>
+                        </div>
+                        <div class="reviews-content">
+                            {% for promotion in promotions %}
+                                <div class="chats-content new">
+                                    <div class="chat-contact-header">
+                                        <h4>{{ promotion.company.company_name }}</h4>
+                                        <span>{{ promotion.created_at|date:'F, d' }}</span>
+                                    </div>
+                                    <div class="chat-contact-body">
+                                        <table class="table">
+                                            <tr>
+                                                <td>Action:</td> <td>{{ promotion.get_action }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Count:</td> <td>{{ promotion.count_of_action }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total price:</td> <td>{{ promotion.total_amount|floatformat }} Uzs</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Status:</td>
+                                                <td>{{ promotion.get_status }}</td>
+                                            </tr>
+                                            {% if not promotion.status %}
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        <a href="{% url 'promotions:promotion_payment' %}">
+                                                        Activate
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        </table>
+                                        <p>
+                                        </p>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                You have not notifications yet!
+                            {% endfor %}
+                        </div>
+                        {% include 'parts/paginator.html' %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="overlay"></div>
+    </section>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+    $(document).ready(function () {
+        function get_and_set_image(file_selector, image_selector) {
+            var files = file_selector.files;
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(image_selector).attr('src', e.target.result);
+            };
+            reader.readAsDataURL(files[0]);
+        }
+
+        $('#attach_image').click(function (e) {
+            e.preventDefault();
+             $('#id_image').click();
+        });
+        $(document).on( 'change', '#id_image',function () {
+            var image_selecter = $('.image_preview').children('img');
+            get_and_set_image(this, image_selecter);
+        });
+    });
+    </script>
+{% endblock %}

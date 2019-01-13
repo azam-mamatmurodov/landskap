@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Dashboard' %}{% endblock %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products_edit">{% trans 'News list' %}</span>
+        <div class="div_news_edit"></div>
+        <a href="{% url 'users:news_create' %}">CREATE NEWS</a>
+    </div>
+    <div class="towns container my">
+        <div class="div_products_table row">
+                <table class="news_table">
+                    <tr>
+                        <th>Picture</th>
+                        <th>Title</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for news_item in news_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'users:news_edit' pk=news_item.pk %}">
+                                    {% if news_item.image %}
+                                        <img src="{{ news_item.image.url }}" alt="{{ news_item.title }}">
+                                    {% else %}
+                                        <img src="{% static 'default.png' %}" alt="">
+                                    {% endif %}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'users:news_edit' pk=news_item.pk %}">
+                                    {{ news_item.title }}
+                                </a>
+                            </td>
+                            <td class="news_table_actions"><a href="{% url 'users:news_edit' pk=news_item.pk %}">Edit</a>
+                                <a href="{% url 'users:news_delete' pk=news_item.pk %}">Remove</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% if is_paginated %}
+                    <div class="products_buttons col-12">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-dark">Prev</a>
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-dark">Next</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+    </div>
+
+{% endblock %}
+{% block css %}
+    <style>
+        .news_item{
+            display: inline-block;
+        }
+        .news_image img {
+            height: 200px;
+            width: 100%;
+        }
+        .news_table td:first-child img
+        {
+            width: 100%;
+        }
+        .news_table td:first-child
+        {
+            width: 10%;
+            text-align: center;
+        }
+    </style>
+{% endblock %}

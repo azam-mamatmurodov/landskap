@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static i18n widget_tweaks %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products_edit">CREATE NEWS</span>
+        <div class="div_products_edit"></div>
+    </div>
+    <div class="towns container my">
+        <div class="row">
+            {{form.media}}
+            <div class="page-content">
+                <div class="col-md-9">
+                    {% include 'parts/form-template.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

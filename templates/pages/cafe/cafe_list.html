@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_cafe">MY CAFES</span>
+        <div class="div_cafe"></div>
+        <a href="{% url 'users:cafe_add' %}">NEW CAFE</a>
+    </div>
+    <div class="towns container my">
+        <div class="row">
+            {% for cafe in cafe_list %}
+                <article class="col-lg-4 col-md-6">
+                    <aside class="cafe_aside">
+                        <div class="aside_top">
+                            <div class="aside_top_outsite">
+                                <div class="aside_top_inside">
+                                    <div class="aside_top_img_block">
+                                        <div class="aside_top_img"
+                                             style="background-image: url({% if cafe.user.settings.logo %}{{ cafe.user.settings.logo.url }}{% else %}{% static 'img/logo_1.png' %}{% endif %});"
+                                        >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{{ cafe.get_absolute_url }}" class="aside_top_pen">
+                                <img src="{% static 'img/main_towns_pen.png' %}" alt="">
+                            </a>
+                        </div>
+                        <div class="aside_bottom">
+                            <div>
+                                {{ cafe }}
+                            </div>
+                            <p><span>Address:</span> {{ cafe.address }}</p>
+                            <p><span>Category:</span> {{ cafe.category }}</p>
+                            <form action="" class="aside_form">
+                                <div>
+                                    <object type="image/svg+xml" data="{% static 'img/smiling-face.svg' %}" >
+                                        Your browser does not support SVG
+                                    </object>
+                                    <span>{{ cafe.get_likes }}</span>
+                                </div>
+                                <div>
+                                    <object type="image/svg+xml" data="{% static 'img/sad-face.svg' %}" >
+                                        Your browser does not support SVG
+                                    </object>
+                                    <span>{{ cafe.get_dislikes }}</span>
+                                </div>
+                                <div>
+                                    <object type="image/svg+xml" data="{% static 'img/chat-comment.svg' %}" >
+                                        Your browser does not support SVG
+                                    </object>
+                                    <span>
+                                        <a href="{% url 'users:cafe_review_list' cafe_id=cafe.id %}">
+                                            {{ cafe.reviews.count }}
+                                        </a>
+                                    </span>
+                                </div>
+                                <div>
+                                    <object type="image/svg+xml" data="{% static 'img/coffee.svg' %}" >
+                                        Your browser does not support SVG
+                                    </object>
+                                    <span>{{ cafe.meals.count }}</span>
+                                </div>
+                            </form>
+                        </div>
+                    </aside>
+                </article>
+        {% endfor %}
+        </div>
+    </div>
+    {% include 'parts/paginator.html' %}
+{% endblock %}

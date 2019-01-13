@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products">MODIFIERS</span>
+        <div class="div_products"></div>
+        <a href="{% url 'modifiers:modifier_create' %}">NEW MODIFIER ITEM</a>
+    </div>
+
+    <div class="towns container my">
+        <div class="div_products_table row">
+            <ul action="" class="div_products_table_form col-lg-2">
+                {% url 'modifiers:modifier_list' as modifiers_list_url %}
+                <li class="{% if request.path == modifiers_list_url %}active{% endif %}"><a href="{{ modifiers_list_url }}">All modifiers</a></li>
+                {% for category in categories %}
+                    {% url 'modifiers:modifier_cat_list' cat_id=category.id as modifier_cat_list_url %}
+                    <li class="{% if request.path == modifier_cat_list_url %}active{% endif %}"><a href="{{ modifier_cat_list_url }}">{{ category.title }}</a></li>
+                {% endfor %}
+            <li class="{% if request.path == "/modifiers/create/" %}active{% endif %}"><a href="/modifiers/create/">New modifier</a></li>
+            </ul>
+            <table class="products_table col-lg-10">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+                {% for modifier in modifier_list %}
+                    <tr>
+                        <td><a href="{{ modifier.get_absolute_url }}">{{ modifier.title }}</a></td>
+                        <td>{% if modifier.category %}{{ modifier.category }}{% else %}-{% endif %}</td>
+                        <td>{% if modifier.available %}<p>Available</p>{% else %}<p>Not available</p>{% endif %}</td>
+                        <td>{{ modifier.price }}</td>
+                        <td><a href="{% url 'modifiers:modifier_edit' pk=modifier.pk %}">Edit</a>
+                            <a href="{% url 'modifiers:modifier_delete' pk=modifier.pk %}">Remove</a></td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+            {% if is_paginated %}
+                <div class="products_buttons col-12">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-dark">Prev</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-dark">Next</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <nav class="nav nav_fixed">
+        <div class="user">
+            <div class="user_img">
+                <img src="{% static 'img/logo_3.jpg' %}" alt="">
+            </div>
+            <div class="user_name">
+                <p>John Martin</p>
+                <span>Manager</span>
+            </div>
+        </div>
+        <ul>
+            <li class="active"><a href="#">My Cafes</a></li>
+            <li><a href="#">Employees</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Analytics</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+        <a class="login_out" href="#">
+            <img src="{% static 'img/login_out-512.png' %}" alt="">Log out
+        </a>
+    </nav>
+
+    <div class="all_display"></div>
+
+    <script src="{% static 'JQuery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

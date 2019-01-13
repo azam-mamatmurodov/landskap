@@ -1,0 +1,14 @@
+.idea/
+*.pyc
+assets/
+media/*
+__pycache__/
+react.*
+new_mockup/
+static_old/
+settings.py
+*.backup
+*.sql
+*.ini
+static
+manage.py

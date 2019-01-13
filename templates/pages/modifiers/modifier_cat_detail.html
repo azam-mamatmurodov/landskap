@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products">PRODUCTS</span>
+        <div class="div_products"></div>
+        <a href="{% url 'modifiers:modifier_create' %}">NEW PRODUCT</a>
+    </div>
+    <div class="towns container my">
+        <div class="product_images col-md-5">
+            <img style="width: 100%; height: 100%;" class="product_image" id="img_01" src="{{ object.image.url }}" data-zoom-image="{{ object.image.url }}"/>
+        </div>
+        <div class="product_text col-md-7">
+            <div class="price">
+                <strong>Price</strong>: {{ object.price }}
+            </div>
+            <div class="description">
+                {{ object.description|safe }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

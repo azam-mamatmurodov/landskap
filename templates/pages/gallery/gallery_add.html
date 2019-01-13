@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="towns container my">
+    <div class="gallery_cont row">
+    <div class="gallery-items">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container">
+                <div class="row image_line">
+                    <div class="image col-md-3">
+                        <img class="preview_thumbnail" src="#" alt="">
+                        <input type="file" name="files-0" required>
+                    </div>
+                </div>
+                <div class="row actions">
+                    <a href="#" class="btn btn-dark more">
+                        <span class="fa fa-plus"></span>
+                    </a>
+                    <input type="submit" class="btn btn-primary" value="{% trans 'Save' %}">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            function get_and_set_image(file_selector, image_selector) {
+                var files = file_selector.files;
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(image_selector).attr('src', e.target.result);
+                };
+                reader.readAsDataURL(files[0]);
+            }
+            $('.more').click(function (e) {
+                e.preventDefault();
+                var image_div = $('div.image');
+                $('<div class="image col-md-3">' +
+                    '<img class="preview_thumbnail" src="#" alt="">'+
+                    '<input type="file" name="files-'+ (image_div.length) +'">' +
+                    '</div>').insertAfter(image_div[image_div.length-1]);
+
+            });
+
+            $(document).on( 'change', '.image input[type="file"]',function () {
+                var image_selecter = $(this).siblings('img.preview_thumbnail');
+                get_and_set_image(this, image_selecter);
+            });
+        })
+    </script>
+{% endblock %}
+{% block css %}
+    <style>
+        .container > .row > .image > img {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        a.more {
+            font-size: 11px;
+            color: #ffffff;
+            letter-spacing: 2px;
+            border: 2px solid transparent;
+            background: #ff6b5f;
+            border-radius: 100px;
+            transition: 0.5s;
+            padding: 8px 28px;
+            display: inline-block;
+            text-decoration: none;
+            margin: 0 15px 0 0;
+        }
+        a.more:hover {
+            background: #413377;
+            color: #fff;
+            border: 2px solid #413377;
+        }
+
+        .row.actions {
+          margin: 30px 0;
+        }
+    </style>
+{% endblock %}

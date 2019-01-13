@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static i18n widget_tweaks landskap_tags %}
+
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products_edit">NEW MODIFIER ITEM</span>
+        <div class="div_products_edit"></div>
+    </div>
+
+    <div class="towns container my">
+        <div class="row">
+
+            <div class="col-xl-9 col-lg-9 col-md-6 col-sm-12">
+                {{ form.errors }}
+                <form method="post" action="" class="products_edit_form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="products_edit_left_form">
+                        <div>
+                            {% render_field form.title placeholder='Name' %}
+                            <div></div>
+                        </div>
+                        <div>
+                            {% render_field form.category placeholder='Category' %}
+                        </div>
+
+                        <div>
+                            {% render_field form.price placeholder='Price' %}
+                            <div></div>
+                        </div>
+                        <div>
+                            <select name="available">
+                                <option value="False">Not available</option>
+                                <option selected value="True">Available</option>
+                            </select>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div>
+                        <button>Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="all_display"></div>
+
+    <script src="{% static 'JQuery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    <style>
+
+    </style>
+{% endblock %}

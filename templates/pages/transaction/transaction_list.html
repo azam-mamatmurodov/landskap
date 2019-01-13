@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products">Transactions</span>
+        <div class="div_products"></div>
+    </div>
+
+    <div class="towns container my">
+        <div class="div_products_table row">
+            <table class="products_table col-lg-12">
+                <tr>
+                    <th>Customer</th>
+                    <th>Total paid</th>
+                    <th>Transaction date</th>
+                    <th>Payment type</th>
+                    <th>Free item</th>
+                    <th>Products</th>
+                    <th>Actions</th>
+                </tr>
+                {% for transaction in object_list %}
+                    <tr>
+                        <td>
+                            {{ transaction.payer.get_full_name }}
+                        </td>
+                        <td>
+                            {{ transaction.amount }}
+                        </td>
+                        <td>
+                            {{ transaction.created_time }}
+                        </td>
+                        <td>
+                            {{ transaction.payment_type }}
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            {{ transaction.order.cart_items.count }}
+                        </td>
+                        <td>
+                            <a href="{% url 'users:transaction_detail' uuid=transaction.pk %}">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% if is_paginated %}
+                <div class="products_buttons col-12">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-dark">Prev</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-dark">Next</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="all_display"></div>
+
+    <script src="{% static 'JQuery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

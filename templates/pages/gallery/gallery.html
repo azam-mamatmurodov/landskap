@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+
+    <div class="new_cafe container my">
+        <span class="span_gallery">{{ cafe.cafe_name }}</span>
+        <div class="div_gallery"></div>
+        <a href="{% url 'users:cafe_gallery_add' cafe_id=view.kwargs.cafe_id %}" class="add btn btn-link">ADD NEW</a>
+    </div>
+
+<div class="towns container my">
+    <div class="gallery_cont row">
+        {% for file in files %}
+            <div class="col-lg-4 col-sm-6 col-12">
+                <article class="gallery_img_block">
+                    <div class="gallery_img_block_inner">
+                        <a href="{% if file.file %}{{ file.file.url }}{% else %}{% static 'img/logo_1.png' %}{% endif %}">
+                            <aside class="gallery_img"
+                               style="background-image: url({% if file.file %}{{ file.file.url }}{% else %}{% static 'img/logo_1.png' %}{% endif %});"
+                        >
+                        </aside>
+                        </a>
+                        <a href="{% url 'users:cafe_gallery_delete'  cafe_id=view.kwargs.cafe_id file_id=file.id %}" class="gallery_image_item_delete">
+                            <i class="fa fa-trash"></i>
+                            Delete
+                        </a>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css %}
+    <style>
+
+    .gallery_image a.player_open {
+        content: "";
+        width: 58px;
+        height: 60px;
+        position: absolute;
+        background-image: url({% static 'images/player.png' %});
+        background-size: 52px 52px;
+        z-index: 1;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        top: 75px;
+        visibility: hidden;
+        transition: .5s;
+        opacity:  0;
+        text-indent: -1000px;
+        right:  60px;
+    }
+    .gallery_image:hover a.player_open {
+        opacity: 1;
+        visibility: visible;
+        transition: .4s;
+        background-size: 55px !important;
+    }
+    a.gallery_image_item_delete {
+        display: block;
+        color: white;
+        position: absolute;
+        right: 0;
+        background-color: #424472;
+        text-align: right;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    </style>
+{% endblock %}

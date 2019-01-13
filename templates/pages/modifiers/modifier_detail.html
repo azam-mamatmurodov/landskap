@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+
+{% block content %}
+    <div class="new_cafe container my">
+        <span class="span_products">MODIFIERS</span>
+        <div class="div_products"></div>
+        <a href="{% url 'modifiers:modifier_create' %}">NEW MODIFIER</a>
+    </div>
+    <div class="towns container my">
+        <div class="product_text col-md-7">
+            <div class="title">
+                <strong>Title</strong>: {{ object.title }}
+            </div>
+            <div class="price">
+                <strong>Price</strong>: {{ object.price }}
+            </div>
+            <div class="description">
+                {{ object.description|safe }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

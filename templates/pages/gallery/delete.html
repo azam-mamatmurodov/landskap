@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="new_cafe container my">
+    <span class="span_gallery">Gallary item</span>
+    <div class="div_gallery"></div>
+    <a href="{% url 'users:cafe_gallery_add' cafe_id=view.kwargs.cafe_id %}" class="add btn btn-link">ADD NEW</a>
+</div>
+<div class="towns container my">
+    <div class="gallery_cont row">
+        <div class="files">
+            {% if file.is_image %}
+                <img class="img-thumbnail" style="width: 200px; height: 200px;" src="{{ file.file.url }}" alt="">
+            {% else %}
+                <video src="{{ file.file.url }}"  width="700" height="auto" ></video>
+            {% endif %}
+        </div>
+        <div class="gallery-items">
+            <form action="" method="POST" id="delete_form">
+                Are you sure to delete ?
+                <input type="hidden" name="action">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-primary" value="{% trans 'Delete' %}">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

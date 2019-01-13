@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n widget_tweaks %}
+
+
+{% block content %}
+<div class="new_cafe container my">
+    <span class="span_cafe_edit">{{ cafe.cafe_name }}</span>
+    <div class="div_cafe_edit"></div>
+</div>
+<div class="towns container my">
+    <div class="row">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <button class="btn btn-danger">{% trans 'Delete' %}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
